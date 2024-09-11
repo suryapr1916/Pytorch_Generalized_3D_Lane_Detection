@@ -250,7 +250,7 @@ def laneline_label_generator(base_folder, image_file, label_file, seg_file, dept
                     lane2D[j - 1, 1] - lane2D[j, 1] <= 0):
                 visibility_vec[j] = 0
 
-        lane2D = lane2D.astype(np.int)
+        lane2D = lane2D.astype(int)
         for j in range(lane2D.shape[0]):
             if visibility_vec[j] == 0:
                 continue
@@ -324,7 +324,7 @@ def laneline_label_generator(base_folder, image_file, label_file, seg_file, dept
                     lane2D[j - 1, 1] - lane2D[j, 1] <= 0):
                 visibility_vec[j] = 0
 
-        lane2D = lane2D.astype(np.int)
+        lane2D = lane2D.astype(int)
         for j in range(lane2D.shape[0]):
             if visibility_vec[j] == 0:
                 continue

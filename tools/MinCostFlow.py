@@ -34,8 +34,8 @@ def SolveMinCostFlow(adj_mat, cost_mat):
     end_nodes = [i for i in range(1, cnt_1+1)] + \
                 np.repeat(np.array([i for i in range(cnt_1+1, cnt_1 + cnt_2 + 1)]).reshape([1, -1]), cnt_1, axis=0).flatten().tolist() + \
                 [cnt_1 + cnt_2 + 1 for i in range(cnt_2)]
-    capacities = np.ones(cnt_1, dtype=np.int).tolist() + adj_mat.flatten().astype(np.int).tolist() + np.ones(cnt_2, dtype=np.int).tolist()
-    costs = (np.zeros(cnt_1, dtype=np.int).tolist() + cost_mat.flatten().astype(np.int).tolist() + np.zeros(cnt_2, dtype=np.int).tolist())
+    capacities = np.ones(cnt_1, dtype=np.int).tolist() + adj_mat.flatten().astype(int).tolist() + np.ones(cnt_2, dtype=np.int).tolist()
+    costs = (np.zeros(cnt_1, dtype=np.int).tolist() + cost_mat.flatten().astype(int).tolist() + np.zeros(cnt_2, dtype=np.int).tolist())
     # Define an array of supplies at each node.
     supplies = [min(cnt_nonzero_row, cnt_nonzero_col)] + np.zeros(cnt_1 + cnt_2, dtype=np.int).tolist() + [-min(cnt_nonzero_row, cnt_nonzero_col)]
     # supplies = [min(cnt_1, cnt_2)] + np.zeros(cnt_1 + cnt_2, dtype=np.int).tolist() + [-min(cnt_1, cnt_2)]

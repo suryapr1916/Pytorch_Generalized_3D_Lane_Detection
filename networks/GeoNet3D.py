@@ -162,10 +162,10 @@ class Net(nn.Module):
         # image scale matrix
         self.S_im = torch.from_numpy(np.array([[args.resize_w,              0, 0],
                                                [            0,  args.resize_h, 0],
-                                               [            0,              0, 1]], dtype=np.float32))
-        self.S_im_inv = torch.from_numpy(np.array([[1/np.float(args.resize_w),                         0, 0],
-                                                   [                        0, 1/np.float(args.resize_h), 0],
-                                                   [                        0,                         0, 1]], dtype=np.float32))
+                                               [            0,              0, 1]], dtype=float))
+        self.S_im_inv = torch.from_numpy(np.array([[1/float(args.resize_w),                         0, 0],
+                                                   [                        0, 1/float(args.resize_h), 0],
+                                                   [                        0,                         0, 1]], dtype=float))
         self.S_im_inv_batch = self.S_im_inv.unsqueeze_(0).expand([self.batch_size, 3, 3]).type(torch.FloatTensor)
 
         # image transform matrix
@@ -210,7 +210,7 @@ class Net(nn.Module):
 
         # Define network
         # the grid considers both src and dst grid normalized
-        size_top = torch.Size([self.batch_size, np.int(args.ipm_h), np.int(args.ipm_w)])
+        size_top = torch.Size([self.batch_size, int(args.ipm_h), int(args.ipm_w)])
         self.project_layer = ProjectiveGridGenerator(size_top, self.M_inv, args.no_cuda)
 
         # Conv layers to convert original resolution binary map to target resolution with high-dimension

@@ -137,14 +137,14 @@ class LaneEval(object):
         adj_mat = np.zeros((cnt_gt, cnt_pred), dtype=np.int)
         cost_mat = np.zeros((cnt_gt, cnt_pred), dtype=np.int)
         cost_mat.fill(1000)
-        num_match_mat = np.zeros((cnt_gt, cnt_pred), dtype=np.float)
-        x_dist_mat_close = np.zeros((cnt_gt, cnt_pred), dtype=np.float)
+        num_match_mat = np.zeros((cnt_gt, cnt_pred), dtype=float)
+        x_dist_mat_close = np.zeros((cnt_gt, cnt_pred), dtype=float)
         x_dist_mat_close.fill(1000.)
-        x_dist_mat_far = np.zeros((cnt_gt, cnt_pred), dtype=np.float)
+        x_dist_mat_far = np.zeros((cnt_gt, cnt_pred), dtype=float)
         x_dist_mat_far.fill(1000.)
-        z_dist_mat_close = np.zeros((cnt_gt, cnt_pred), dtype=np.float)
+        z_dist_mat_close = np.zeros((cnt_gt, cnt_pred), dtype=float)
         z_dist_mat_close.fill(1000.)
-        z_dist_mat_far = np.zeros((cnt_gt, cnt_pred), dtype=np.float)
+        z_dist_mat_far = np.zeros((cnt_gt, cnt_pred), dtype=float)
         z_dist_mat_far.fill(1000.)
         # compute curve to curve distance
         for i in range(cnt_gt):
@@ -162,7 +162,7 @@ class LaneEval(object):
                 adj_mat[i, j] = 1
                 # ATTENTION: use the sum as int type to meet the requirements of min cost flow optimization (int type)
                 # using num_match_mat as cost does not work?
-                cost_mat[i, j] = np.sum(euclidean_dist).astype(np.int)
+                cost_mat[i, j] = np.sum(euclidean_dist).astype(int)
                 # cost_mat[i, j] = num_match_mat[i, j]
 
                 # use the both visible portion to calculate distance error
@@ -219,14 +219,14 @@ class LaneEval(object):
             P_gt = np.matmul(self.H_crop, P_g2im)
             img = cv2.imread(ops.join(self.dataset_dir, raw_file))
             img = cv2.warpPerspective(img, self.H_crop, (self.resize_w, self.resize_h))
-            img = img.astype(np.float) / 255
+            img = img.astype(float) / 255
 
             for i in range(cnt_gt):
                 x_values = gt_lanes[i][:, 0]
                 z_values = gt_lanes[i][:, 1]
                 x_2d, y_2d = projective_transformation(P_gt, x_values, self.y_samples, z_values)
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
 
                 if i in match_gt_ids:
                     color = [0, 0, 1]
@@ -244,8 +244,8 @@ class LaneEval(object):
                 x_values = pred_lanes[i][:, 0]
                 z_values = pred_lanes[i][:, 1]
                 x_2d, y_2d = projective_transformation(P_gt, x_values, self.y_samples, z_values)
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
 
                 if i in match_pred_ids:
                     color = [1, 0, 0]
@@ -521,7 +521,7 @@ class LaneEval(object):
         adj_mat = np.zeros((cnt_gt, cnt_pred), dtype=np.int)
         cost_mat = np.zeros((cnt_gt, cnt_pred), dtype=np.int)
         cost_mat.fill(1000)
-        num_match_mat = np.zeros((cnt_gt, cnt_pred), dtype=np.float)
+        num_match_mat = np.zeros((cnt_gt, cnt_pred), dtype=float)
         # compute curve to curve distance
         for i in range(cnt_gt):
             for j in range(cnt_pred):
@@ -538,7 +538,7 @@ class LaneEval(object):
                 adj_mat[i, j] = 1
                 # ATTENTION: use the sum as int type to meet the requirements of min cost flow optimization (int type)
                 # why using num_match_mat as cost does not work?
-                cost_mat[i, j] = np.sum(euclidean_dist).astype(np.int)
+                cost_mat[i, j] = np.sum(euclidean_dist).astype(int)
                 # cost_mat[i, j] = num_match_mat[i, j]
 
         # solve bipartite matching vis min cost flow solver

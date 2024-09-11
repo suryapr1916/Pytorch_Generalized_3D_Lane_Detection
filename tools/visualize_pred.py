@@ -67,7 +67,7 @@ class lane_visualizer(object):
 
         img = cv2.imread(ops.join(self.dataset_dir, raw_file))
         img = cv2.warpPerspective(img, self.H_crop, (self.resize_w, self.resize_h))
-        img = img.astype(np.float) / 255
+        img = img.astype(float) / 255
         im_ipm = cv2.warpPerspective(img, H_im2ipm, (self.ipm_w, self.ipm_h))
         im_ipm = np.clip(im_ipm, 0, 1)
 
@@ -100,11 +100,11 @@ class lane_visualizer(object):
             #     x_ipm_values = x_values
             #     y_ipm_values = self.y_samples
             x_ipm_values, y_ipm_values = homographic_transformation(self.H_g2ipm, x_ipm_values, y_ipm_values)
-            x_ipm_values = x_ipm_values.astype(np.int)
-            y_ipm_values = y_ipm_values.astype(np.int)
+            x_ipm_values = x_ipm_values.astype(int)
+            y_ipm_values = y_ipm_values.astype(int)
             x_2d, y_2d = projective_transformation(P_gt, x_values, self.y_samples, z_values)
-            x_2d = x_2d.astype(np.int)
-            y_2d = y_2d.astype(np.int)
+            x_2d = x_2d.astype(int)
+            y_2d = y_2d.astype(int)
 
             color = colors[np.mod(i, len(colors))]
             # draw on image

@@ -183,7 +183,7 @@ class Visualizer:
 
         x_min = args.top_view_region[0, 0]
         x_max = args.top_view_region[1, 0]
-        self.anchor_x_steps = np.linspace(x_min, x_max, np.int(args.ipm_w / 8), endpoint=True)
+        self.anchor_x_steps = np.linspace(x_min, x_max, int(args.ipm_w / 8), endpoint=True)
         self.anchor_y_steps = args.anchor_y_steps
 
         # transformation from ipm to ground region
@@ -217,8 +217,8 @@ class Visualizer:
                 else:
                     z_3d = lane_anchor[j, self.num_y_steps:self.anchor_dim - 1]
                     x_2d, y_2d = projective_transformation(P_g2im, x_3d, self.anchor_y_steps, z_3d)
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
                 for k in range(1, x_2d.shape[0]):
                     img = cv2.line(img, (x_2d[k - 1], y_2d[k - 1]), (x_2d[k], y_2d[k]), color, 2)
 
@@ -231,8 +231,8 @@ class Visualizer:
                 else:
                     z_3d = lane_anchor[j, self.anchor_dim + self.num_y_steps:2 * self.anchor_dim - 1]
                     x_2d, y_2d = projective_transformation(P_g2im, x_3d, self.anchor_y_steps, z_3d)
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
                 for k in range(1, x_2d.shape[0]):
                     img = cv2.line(img, (x_2d[k - 1], y_2d[k - 1]), (x_2d[k], y_2d[k]), color, 2)
 
@@ -245,8 +245,8 @@ class Visualizer:
                 else:
                     z_3d = lane_anchor[j, 2 * self.anchor_dim + self.num_y_steps:3 * self.anchor_dim - 1]
                     x_2d, y_2d = projective_transformation(P_g2im, x_3d, self.anchor_y_steps, z_3d)
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
                 for k in range(1, x_2d.shape[0]):
                     img = cv2.line(img, (x_2d[k - 1], y_2d[k - 1]), (x_2d[k], y_2d[k]), color, 2)
         return img
@@ -272,8 +272,8 @@ class Visualizer:
                     z_3d = lane_anchor[j, self.num_y_steps:2*self.num_y_steps]
                     x_2d, y_2d = projective_transformation(P_g2im, x_3d, self.anchor_y_steps, z_3d)
                     visibility = lane_anchor[j, 2 * self.num_y_steps:3 * self.num_y_steps]
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
                 for k in range(1, x_2d.shape[0]):
                     if visibility[k] > self.prob_th:
                         img = cv2.line(img, (x_2d[k - 1], y_2d[k - 1]), (x_2d[k], y_2d[k]), color, 2)
@@ -291,8 +291,8 @@ class Visualizer:
                     z_3d = lane_anchor[j, self.anchor_dim + self.num_y_steps:self.anchor_dim + 2*self.num_y_steps]
                     x_2d, y_2d = projective_transformation(P_g2im, x_3d, self.anchor_y_steps, z_3d)
                     visibility = lane_anchor[j, self.anchor_dim + 2*self.num_y_steps:self.anchor_dim + 3*self.num_y_steps]
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
                 for k in range(1, x_2d.shape[0]):
                     if visibility[k] > self.prob_th:
                         img = cv2.line(img, (x_2d[k - 1], y_2d[k - 1]), (x_2d[k], y_2d[k]), color, 2)
@@ -311,8 +311,8 @@ class Visualizer:
                     x_2d, y_2d = projective_transformation(P_g2im, x_3d, self.anchor_y_steps, z_3d)
                     visibility = lane_anchor[j,
                                  2 * self.anchor_dim + 2 * self.num_y_steps:2 * self.anchor_dim + 3 * self.num_y_steps]
-                x_2d = x_2d.astype(np.int)
-                y_2d = y_2d.astype(np.int)
+                x_2d = x_2d.astype(int)
+                y_2d = y_2d.astype(int)
                 for k in range(1, x_2d.shape[0]):
                     if visibility[k] > self.prob_th:
                         img = cv2.line(img, (x_2d[k - 1], y_2d[k - 1]), (x_2d[k], y_2d[k]), color, 2)
@@ -329,8 +329,8 @@ class Visualizer:
 
                 # compute lanelines in ipm view
                 x_ipm, y_ipm = homographic_transformation(self.H_g2ipm, x_g, self.anchor_y_steps)
-                x_ipm = x_ipm.astype(np.int)
-                y_ipm = y_ipm.astype(np.int)
+                x_ipm = x_ipm.astype(int)
+                y_ipm = y_ipm.astype(int)
                 for k in range(1, x_g.shape[0]):
                     im_ipm = cv2.line(im_ipm, (x_ipm[k - 1], y_ipm[k - 1]),
                                       (x_ipm[k], y_ipm[k]), color, 1)
@@ -342,8 +342,8 @@ class Visualizer:
 
                 # compute lanelines in ipm view
                 x_ipm, y_ipm = homographic_transformation(self.H_g2ipm, x_g, self.anchor_y_steps)
-                x_ipm = x_ipm.astype(np.int)
-                y_ipm = y_ipm.astype(np.int)
+                x_ipm = x_ipm.astype(int)
+                y_ipm = y_ipm.astype(int)
                 for k in range(1, x_g.shape[0]):
                     im_ipm = cv2.line(im_ipm, (x_ipm[k - 1], y_ipm[k - 1]),
                                       (x_ipm[k], y_ipm[k]), color, 1)
@@ -355,8 +355,8 @@ class Visualizer:
 
                 # compute lanelines in ipm view
                 x_ipm, y_ipm = homographic_transformation(self.H_g2ipm, x_g, self.anchor_y_steps)
-                x_ipm = x_ipm.astype(np.int)
-                y_ipm = y_ipm.astype(np.int)
+                x_ipm = x_ipm.astype(int)
+                y_ipm = y_ipm.astype(int)
                 for k in range(1, x_g.shape[0]):
                     im_ipm = cv2.line(im_ipm, (x_ipm[k - 1], y_ipm[k - 1]),
                                       (x_ipm[k], y_ipm[k]), color, 1)
@@ -375,8 +375,8 @@ class Visualizer:
 
                 # compute lanelines in ipm view
                 x_ipm, y_ipm = homographic_transformation(self.H_g2ipm, x_g, self.anchor_y_steps)
-                x_ipm = x_ipm.astype(np.int)
-                y_ipm = y_ipm.astype(np.int)
+                x_ipm = x_ipm.astype(int)
+                y_ipm = y_ipm.astype(int)
                 for k in range(1, x_g.shape[0]):
                     if visibility[k] > self.prob_th:
                         im_ipm = cv2.line(im_ipm, (x_ipm[k - 1], y_ipm[k - 1]),
@@ -396,8 +396,8 @@ class Visualizer:
 
                 # compute lanelines in ipm view
                 x_ipm, y_ipm = homographic_transformation(self.H_g2ipm, x_g, self.anchor_y_steps)
-                x_ipm = x_ipm.astype(np.int)
-                y_ipm = y_ipm.astype(np.int)
+                x_ipm = x_ipm.astype(int)
+                y_ipm = y_ipm.astype(int)
                 for k in range(1, x_g.shape[0]):
                     if visibility[k] > self.prob_th:
                         im_ipm = cv2.line(im_ipm, (x_ipm[k - 1], y_ipm[k - 1]),
@@ -417,8 +417,8 @@ class Visualizer:
 
                 # compute lanelines in ipm view
                 x_ipm, y_ipm = homographic_transformation(self.H_g2ipm, x_g, self.anchor_y_steps)
-                x_ipm = x_ipm.astype(np.int)
-                y_ipm = y_ipm.astype(np.int)
+                x_ipm = x_ipm.astype(int)
+                y_ipm = y_ipm.astype(int)
                 for k in range(1, x_g.shape[0]):
                     if visibility[k] > self.prob_th:
                         im_ipm = cv2.line(im_ipm, (x_ipm[k - 1], y_ipm[k - 1]),
@@ -522,7 +522,7 @@ class Visualizer:
                                                       z_g)
                     ax.plot(x_g, y_g, z_g, color=color)
 
-    def save_result(self, dataset, train_or_val, epoch, batch_i, idx, images, gt, pred, pred_cam_pitch, pred_cam_height, aug_mat=np.identity(3, dtype=np.float), evaluate=False):
+    def save_result(self, dataset, train_or_val, epoch, batch_i, idx, images, gt, pred, pred_cam_pitch, pred_cam_height, aug_mat=np.identity(3, dtype=float), evaluate=False):
         if not dataset.data_aug:
             aug_mat = np.repeat(np.expand_dims(aug_mat, axis=0), idx.shape[0], axis=0)
 
@@ -647,7 +647,7 @@ class Visualizer:
             plt.clf()
             plt.close(fig)
 
-    def save_result_new(self, dataset, train_or_val, epoch, batch_i, idx, images, gt, pred, pred_cam_pitch, pred_cam_height, aug_mat=np.identity(3, dtype=np.float), evaluate=False):
+    def save_result_new(self, dataset, train_or_val, epoch, batch_i, idx, images, gt, pred, pred_cam_pitch, pred_cam_height, aug_mat=np.identity(3, dtype=float), evaluate=False):
         if not dataset.data_aug:
             aug_mat = np.repeat(np.expand_dims(aug_mat, axis=0), idx.shape[0], axis=0)
 
@@ -800,7 +800,7 @@ def resample_laneline_in_y(input_lane, y_steps, out_vis=False):
     y_max = np.max(input_lane[:, 1])+5
 
     if input_lane.shape[1] < 3:
-        input_lane = np.concatenate([input_lane, np.zeros([input_lane.shape[0], 1], dtype=np.float32)], axis=1)
+        input_lane = np.concatenate([input_lane, np.zeros([input_lane.shape[0], 1], dtype=float)], axis=1)
 
     f_x = interp1d(input_lane[:, 1], input_lane[:, 0], fill_value="extrapolate")
     f_z = interp1d(input_lane[:, 1], input_lane[:, 2], fill_value="extrapolate")
@@ -828,7 +828,7 @@ def resample_laneline_in_y_with_vis(input_lane, y_steps, vis_vec):
     assert(input_lane.shape[0] >= 2)
 
     if input_lane.shape[1] < 3:
-        input_lane = np.concatenate([input_lane, np.zeros([input_lane.shape[0], 1], dtype=np.float32)], axis=1)
+        input_lane = np.concatenate([input_lane, np.zeros([input_lane.shape[0], 1], dtype=float)], axis=1)
 
     f_x = interp1d(input_lane[:, 1], input_lane[:, 0], fill_value="extrapolate")
     f_z = interp1d(input_lane[:, 1], input_lane[:, 2], fill_value="extrapolate")

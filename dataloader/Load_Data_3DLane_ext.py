@@ -86,7 +86,7 @@ class LaneDataset(Dataset):
         x_max = self.top_view_region[1, 0]
         self.x_min = x_min
         self.x_max = x_max
-        self.anchor_x_steps = np.linspace(x_min, x_max, np.int(args.ipm_w/8), endpoint=True)
+        self.anchor_x_steps = np.linspace(x_min, x_max, int(args.ipm_w/8), endpoint=True)
         self.anchor_y_steps = args.anchor_y_steps
         self.num_y_steps = len(self.anchor_y_steps)
 
@@ -165,7 +165,7 @@ class LaneDataset(Dataset):
         image = F.crop(image, self.h_crop, 0, self.h_org-self.h_crop, self.w_org)
         image = F.resize(image, size=(self.h_net, self.w_net), interpolation=Image.BILINEAR)
 
-        gt_anchor = np.zeros([np.int32(self.ipm_w / 8), self.num_types, self.anchor_dim], dtype=np.float32)
+        gt_anchor = np.zeros([np.int32(self.ipm_w / 8), self.num_types, self.anchor_dim], dtype=float)
         gt_lanes = self._label_laneline_all[idx]
         gt_vis_inds = self._gt_laneline_visibility_all[idx]
         for i in range(len(gt_lanes)):
@@ -452,7 +452,7 @@ class LaneDataset(Dataset):
                 gt_lane_pts = []
 
                 for i, lane_x in enumerate(gt_lane_pts_X):
-                    lane = np.zeros([gt_y_steps.shape[0], 2], dtype=np.float32)
+                    lane = np.zeros([gt_y_steps.shape[0], 2], dtype=float)
 
                     lane_x = np.array(lane_x)
                     lane[:, 0] = lane_x
@@ -593,7 +593,7 @@ class LaneDataset(Dataset):
             gt_lane_2d = laneline_gt
             # project to ground coordinates
             gt_lane_grd_x, gt_lane_grd_y = homographic_transformation(H_im2g, gt_lane_2d[:, 0], gt_lane_2d[:, 1])
-            gt_lane_3d = np.zeros_like(gt_lane_2d, dtype=np.float32)
+            gt_lane_3d = np.zeros_like(gt_lane_2d, dtype=float)
             gt_lane_3d[:, 0] = gt_lane_grd_x
             gt_lane_3d[:, 1] = gt_lane_grd_y
         else:  # For ground-truth in ground coordinates (Apollo Sim)
@@ -743,7 +743,7 @@ def compute_2d_lanes(pred_anchor, h_samples, H_g2im, anchor_x_steps, anchor_y_st
             # resample at h_samples
             x_values, z_values = resample_laneline_in_y(np.vstack([x_2d, y_2d]).T, h_samples)
             # assign out-of-range x values to be -2
-            x_values = x_values.astype(np.int)
+            x_values = x_values.astype(int)
             x_values[np.where(np.logical_or(x_values < x_min, x_values >= x_max))] = -2
             # assign far side y values to be -2
             x_values[np.where(h_samples < y_2d[0])] = -2
@@ -975,8 +975,8 @@ if __name__ == '__main__':
             im_ipm = np.clip(im_ipm, 0, 1)
 
             # draw visual border on image to confirm calibration
-            x_2d = x_2d.astype(np.int)
-            y_2d = y_2d.astype(np.int)
+            x_2d = x_2d.astype(int)
+            y_2d = y_2d.astype(int)
             img = cv2.line(img, (x_2d[0], y_2d[0]), (x_2d[1], y_2d[1]), [1, 0, 0], 2)
             img = cv2.line(img, (x_2d[2], y_2d[2]), (x_2d[3], y_2d[3]), [1, 0, 0], 2)
             img = cv2.line(img, (x_2d[0], y_2d[0]), (x_2d[2], y_2d[2]), [1, 0, 0], 2)
